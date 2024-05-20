@@ -1,20 +1,23 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import Sidebar from './components/sidebar';
+
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text style={{color: 'whitesmoke'}}>Computational physics challenge</Text>
+    <SafeAreaView>
+      <View style={styles.container}>
       <StatusBar style="auto" />
-    </View>
+      <Text style={{color:'white'}}>lorem ipsum</Text>
+      <Sidebar></Sidebar>
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#232323',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#232323'
   },
 });
