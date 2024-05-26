@@ -7,7 +7,7 @@ function App() {
     <Stack>
         <Stack.Screen name='index' options={{headerShown:false}}/>
     </Stack>
-  );
+  );w
 }
 
 export default App;
