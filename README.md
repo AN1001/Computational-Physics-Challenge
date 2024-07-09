@@ -4,6 +4,11 @@ Maybe other planets or density of air, anything interesting. Game? Angry birds?
 
 300-600 people participating?
 
-Also account for gravity changing with height
-
-Enter 2 countries and calculates trajectory needed for it to go from a to b and displays it on a 3d mini earth
+Extension ideas:
+  - Angry Birds thing
+  - Variable air density/pressure and account for gravity changing with height
+  - Spherical Planet projection
+  - GUI/App for projections
+  - Short Paper
+  - Up an inclined plane with bounces
+  - Enter 2 countries and calculates trajectory needed for it to go from a to b and displays it on a 3d mini earth
