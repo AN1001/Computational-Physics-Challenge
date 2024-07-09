@@ -10,5 +10,5 @@ Extension ideas:
   - Spherical Planet projection
   - GUI/App for projections
   - Short Paper
-  - Up an inclined plane with bounces <span style="color:limegreen;">(seems very hard)</span>
+  - Up an inclined plane with bounces <span style="color:rgb(50,200,50);">(seems very hard)</span>
   - Enter 2 countries and calculates trajectory needed for it to go from a to b and displays it on a 3d mini earth
