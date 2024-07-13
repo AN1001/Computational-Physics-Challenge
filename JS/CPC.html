@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projectile Motion Simulator</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0;
+        padding: 20px;
+      }
+      .slider-container {
+        display: flex;
+        justify-content: space-around;
+        width: 80%;
+        margin: 20px 0;
+      }
+      .slider {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Projectile Motion Simulator</h1>
+    <div class="slider-container">
+      <div class="slider">
+        <label for="theta">Launch Angle (°)</label>
+        <input type="range" id="theta" min="0" max="90" value="45" />
+        <span id="theta-value">45</span>
+      </div>
+      <div class="slider">
+        <label for="g">Gravity (m/s²)</label>
+        <input type="range" id="g" min="0.1" max="20" step="0.1" value="9.81" />
+        <span id="g-value">9.81</span>
+      </div>
+      <div class="slider">
+        <label for="u">Launch Speed (m/s)</label>
+        <input type="range" id="u" min="0.1" max="100" value="20" />
+        <span id="u-value">20</span>
+      </div>
+      <div class="slider">
+        <label for="h">Launch Height (m)</label>
+        <input type="range" id="h" min="0" max="100" value="0" />
+        <span id="h-value">0</span>
+      </div>
+      <div class="slider">
+        <label for="r">Displayed Range (m)</label>
+        <input type="range" id="r" min="5" max="400" value="50" />
+        <span id="r-value">50</span>
+      </div>
+    </div>
+    <div id="plot"></div>
+
+    <h2>Fixed Position Target Model</h2>
+    <div class="slider-container">
+      <div class="slider">
+        <label for="targetX">Target X (m)</label>
+        <input type="range" id="targetX" min="0.1" max="500" value="400" />
+        <span id="targetX-value">400</span>
+      </div>
+      <div class="slider">
+        <label for="targetY">Target Y (m)</label>
+        <input type="range" id="targetY" min="0.1" max="500" value="400" />
+        <span id="targetY-value">400</span>
+      </div>
+      <div class="slider">
+        <label for="iu">Intial speed (m/s)</label>
+        <input type="range" id="iu" min="0.1" max="500" value="100" />
+        <span id="iu-value">100</span>
+      </div>
+    </div>
+    <div id="plot-target"></div>
+
+    <h2>Optimal Range Model</h2>
+    <div class="slider-container">
+      <div class="slider">
+        <label for="opt-theta">Launch Angle (°)</label>
+        <input type="range" id="opt-theta" min="0.1" max="90" value="60" />
+        <span id="opt-theta-value">60</span>
+      </div>
+      <div class="slider">
+        <label for="opt-g">Gravity (m/s²)</label>
+        <input
+          type="range"
+          id="opt-g"
+          min="0.1"
+          max="20"
+          step="0.1"
+          value="9.81"
+        />
+        <span id="opt-g-value">9.81</span>
+      </div>
+      <div class="slider">
+        <label for="opt-u">Launch Speed (m/s)</label>
+        <input type="range" id="opt-u" min="0.1" max="100" value="10" />
+        <span id="opt-u-value">10</span>
+      </div>
+      <div class="slider">
+        <label for="opt-h">Launch Height (m)</label>
+        <input type="range" id="opt-h" min="0.1" max="100" value="2" />
+        <span id="opt-h-value">2</span>
+      </div>
+      <div class="slider">
+        <label for="opt-r">Displayed Range (m)</label>
+        <input type="range" id="opt-r" min="5" max="400" value="14" />
+        <span id="opt-r-value">14</span>
+      </div>
+    </div>
+    <div style="color: blue">
+      <div id="opt-plot-target" style="width: 700px"></div>
+      <div
+        style="
+          display: flex;
+          flex-direction: row;
+          justify-content: space-around;
+        "
+      >
+        <p>S = <span id="s"></span></p>
+        <p>S_Max = <span id="s_max"></span></p>
+      </div>
+    </div>
+
+    <h2>Range Against Time</h2>
+    <div class="slider-container">
+      <div class="slider">
+        <label for="g2">Gravity (m/s²)</label>
+        <input type="range" id="g2" min="8" max="20" step="0.1" value="9.81" />
+        <span id="g-value2">9.81</span>
+      </div>
+      <div class="slider">
+        <label for="u2">Launch Speed (m/s)</label>
+        <input type="range" id="u2" min="0.1" max="50" value="20" />
+        <span id="u-value2">20</span>
+      </div>
+      <div class="slider">
+        <label for="h2">Launch Height (m)</label>
+        <input type="range" id="h2" min="0.1" max="100" value="0" />
+        <span id="h-value2">0</span>
+      </div>
+    </div>
+    <div id="trajectory-plot2"></div>
+    <div id="range-time-plot"></div>
+
+    <script src="index.js"></script>
+  </body>
+</html>
