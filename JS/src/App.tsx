@@ -1,4 +1,5 @@
 import ListGroup from "./ListGroup";
+import Navbar from "./Navbar";
 import "./App.css";
 
 function onSelectItem(event: React.BaseSyntheticEvent) {
@@ -8,6 +9,7 @@ function onSelectItem(event: React.BaseSyntheticEvent) {
 function App() {
   return (
     <div>
+      <Navbar></Navbar>
       <ListGroup
         items={["Uno", "Dos", "Tres", "Quatro"]}
         heading="Numbers"
