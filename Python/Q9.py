@@ -1,73 +1,77 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
-import matplotlib.patches as patches
 
-g = 9.81  # acceleration due to gravity
-e = 0.3  # coefficient of restitution
+g = 9.81  
+dt = 0.01  # time step
+total_time = 1000  
+# air resistance factor selected based on document write-up (parameters there were seemingly arbitrary)
+k = 0.005 
+m = 1000  # projectile mass
 
-h0 = 10.0 # hieght intital
-v0 = 15.0 # vertical velocity
-vx0 = 15.0 # horizontal velocity initial
 
-dt = 0.01 # time steps
-t_max = 16.0
+x0, y0 = 0, 0  # init positions
+v0 = 5000  # init speed
+angle = 45  # launch angle
+vx0 = v0 * np.cos(np.radians(angle))
+vy0 = v0 * np.sin(np.radians(angle))
 
-time = []
-height = []
-horizontal = []
+num_steps = int(total_time / dt)
 
-t = 0.0
-h = h0
-v = v0
-x = 0.0
-vx = vx0
-count = 0
+x_drag_free = np.zeros(num_steps)
+y_drag_free = np.zeros(num_steps)
+x_drag = np.zeros(num_steps)
+y_drag = np.zeros(num_steps)
 
-while t < t_max:
+# Initial conditions (drag free)
+x_drag_free[0], y_drag_free[0] = x0, y0
+vx_drag_free, vy_drag_free = vx0, vy0
 
-    h = h + v * dt # height
-    v = v - g * dt # velocity
+# Initial conditions (drag)
+x_drag[0], y_drag[0] = x0, y0
+vx_drag, vy_drag = vx0, vy0
 
-    x = x + vx * dt # horizontal displacement
+# Initial acceleration (drag)
+v_initial = np.sqrt(vx_drag**2 + vy_drag**2)
+ax_drag = -k * v_initial * vx_drag / m
+ay_drag = -g - k * v_initial * vy_drag / m
 
-    # If the ball hits the ground...
-    if h <= 0:
-        h = 0
-        v = -e * v
-        count +=1
+for i in range(1, num_steps):
+    # Drag-free model
+    x_drag_free[i] = x_drag_free[i-1] + vx_drag_free * dt
+    y_drag_free[i] = y_drag_free[i-1] + vy_drag_free * dt - 0.5 * g * dt**2
+    vy_drag_free -= g * dt
 
-    time.append(t)
-    height.append(h)
-    horizontal.append(x)
-
-    t += dt
-    if count == 3: # stops when 5 collisions
+    if y_drag_free[i] < 0:
         break
 
-fig, ax = plt.subplots()
-ax.set_xlim(0, max(horizontal) * 1.1)
-ax.set_ylim(0, max(height) * 1.1)
-ax.set_xlabel("Horizontal Displacement (m)")
-ax.set_ylabel("Vertical Displacement (m)")
-ax.set_title("Trajectory of a Bouncing Ball with Coefficient of Restitution 0.3")
-ax.set_aspect('equal', 'box')
+for i in range(1, num_steps):
+    # Drag model
+    x_drag[i] = x_drag[i-1] + vx_drag * dt + 0.5 * ax_drag * dt**2
+    y_drag[i] = y_drag[i-1] + vy_drag * dt + 0.5 * ay_drag * dt**2
+    
+    vx_drag_mid = vx_drag + 0.5 * ax_drag * dt
+    vy_drag_mid = vy_drag + 0.5 * ay_drag * dt
+    
+    v = np.sqrt(vx_drag_mid**2 + vy_drag_mid**2)
+    ax_drag = -k * v * vx_drag_mid / m
+    ay_drag = -g - k * v * vy_drag_mid / m
+    
 
-ball_radius = 0.5
-ball = patches.Circle((horizontal[0], height[0]), ball_radius, fc='red')
-ax.add_patch(ball)
-line, = ax.plot([], [], 'b-')  # Line for trajectory
 
-def init():
-    ball.set_center((horizontal[0], height[0]))
-    line.set_data([], [])
-    return ball, line
+    vx_drag += ax_drag * dt
+    vy_drag += ay_drag * dt
+    
+    print(k, x_drag[i-1], y_drag[i-1], vx_drag, vy_drag, ax_drag, ay_drag)
 
-def animate(i):
-    ball.set_center((horizontal[i], height[i]))
-    line.set_data(horizontal[:i + 1], height[:i + 1])
-    return ball, line
+    if y_drag[i] < 0:
+        break
 
-anim = FuncAnimation(fig, animate, init_func=init,
-                     frames=len(time), interval=dt * 1000, blit=True)
+plt.figure(figsize=(12, 6))
+plt.scatter(x_drag_free, y_drag_free, label='Drag-Free', color='blue', s=0.05)
+plt.scatter(x_drag, y_drag, label='With Drag', color='red', s=0.05)
+plt.xlabel('Horizontal Distance (m)')
+plt.ylabel('Vertical Distance (m)')
+plt.title('Drag-Free vs With Air Resistance models')
+plt.legend()
+plt.grid(True)
 plt.show()
