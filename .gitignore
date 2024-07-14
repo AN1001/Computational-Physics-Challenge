@@ -19,6 +19,7 @@ tsconfig.app.json
 tsconfig.json
 tsconfig.node.json
 vite.config.ts
+vite-env.d.ts
 .DS_Store
 
 # Editor directories and files
