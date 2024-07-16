@@ -1,6 +1,7 @@
 import Navbar from "./Navbar";
 import "./App.css";
 import { useState } from "react";
+import TaskSetA from "./TaskSetA";
 
 function App() {
   const [activePage, setActivePage] = useState("1-2");
@@ -8,7 +9,7 @@ function App() {
   const renderPage = () => {
     switch (activePage) {
       case "1-2":
-        return <h1>Task 1-2</h1>;
+        return <TaskSetA></TaskSetA>;
       case "3":
         return <h1>Task 3</h1>;
       case "4-7":
