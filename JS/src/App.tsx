@@ -24,7 +24,7 @@ function App() {
   return (
     <div>
       <Navbar changeHome={setActivePage} activeHeader={activePage}></Navbar>
-      {renderPage()}
+      <div>{renderPage()}</div>
     </div>
   );
 }

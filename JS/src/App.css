@@ -1,3 +1,11 @@
 body {
   background-color: rgb(45, 45, 45);
 }
+
+.modebar {
+  display: none !important;
+}
+
+.plotly-notifier {
+  display: none !important;
+}

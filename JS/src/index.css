@@ -1,3 +1,7 @@
-:root{
+:root {
   filter: invert(1);
+}
+
+.markdown > * {
+  all: revert;
 }

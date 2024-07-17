@@ -1,21 +1,16 @@
 import Plot from "react-plotly.js";
+import DouglasPeucker from "./DouglasPecker";
 
 interface Props {
   title: string;
   traces: Trace[];
-  theta?: number;
-  g?: number;
-  u?: number;
-  h?: number;
-  r?: number;
-  X?: number;
-  Y?: number;
 }
 
 interface Line {
   dash?: string;
   color: string;
   size?: string;
+  shape?: string;
 }
 
 interface Trace {
@@ -26,15 +21,13 @@ interface Trace {
   line: Line;
 }
 
-function toRad(deg: number) {
-  return (deg * Math.PI) / 180;
-}
+function Graph({ title, traces }: Props) {
+  traces.forEach((trace) => {
+    trace.line.shape = "spline";
+    [trace.x, trace.y] = DouglasPeucker(trace.x, trace.y, 0.04);
+    console.log(trace.x, trace.y);
+  });
 
-function Graph({ title, traces, theta, g, u, h, r, X, Y }: Props) {
-  console.log(title, theta, g, u, h, r, X, Y);
-  if (theta) {
-    theta = toRad(theta);
-  }
   return (
     <>
       <Plot
