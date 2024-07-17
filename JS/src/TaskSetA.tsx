@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Graph from "./Graph";
 import Modal from "./Modal";
 import Slider from "./Slider";
@@ -33,6 +34,9 @@ function TaskSetA() {
   const mathExpr = `$$1.4 \\times 10^{3} \\approx 1500$$`;
   const mathExpr2 = `$$1.5 \\times 10^{3} = 1500$$`;
 
+  const [sliderValue, setSliderValue] = useState(50);
+  console.log(sliderValue);
+
   return (
     <div className="d-flex flex-column">
       <h1 className="mx-auto mt-3">Tasks 1-2</h1>
@@ -53,7 +57,12 @@ function TaskSetA() {
           <MarkdownMathRenderer mathExp={mathExpr2} />
         </Modal>
       </div>
-      <Slider min={10} max={100} startValue={50}></Slider>
+      <Slider
+        min={10}
+        max={100}
+        value={sliderValue}
+        onChange={setSliderValue}
+      ></Slider>
     </div>
   );
 }

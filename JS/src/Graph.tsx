@@ -25,7 +25,6 @@ function Graph({ title, traces }: Props) {
   traces.forEach((trace) => {
     trace.line.shape = "spline";
     [trace.x, trace.y] = DouglasPeucker(trace.x, trace.y, 0.04);
-    console.log(trace.x, trace.y);
   });
 
   return (

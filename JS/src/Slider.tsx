@@ -1,17 +1,15 @@
-import React, { useState } from "react";
 import "./slider.css";
 
 interface Props {
   min: number;
   max: number;
-  startValue: number;
+  value: number;
+  onChange: (value: number) => void;
 }
 
-function Slider({ min, max, startValue }: Props) {
-  const [value, setValue] = useState(startValue);
-
+function Slider({ min, max, value, onChange }: Props) {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(Number(event.target.value));
+    onChange(Number(event.target.value));
   };
 
   return (
