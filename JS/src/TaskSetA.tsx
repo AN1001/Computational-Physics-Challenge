@@ -1,5 +1,6 @@
 import Graph from "./Graph";
 import Modal from "./Modal";
+import Slider from "./Slider";
 import MarkdownMathRenderer from "./md";
 
 //calculations
@@ -52,6 +53,7 @@ function TaskSetA() {
           <MarkdownMathRenderer mathExp={mathExpr2} />
         </Modal>
       </div>
+      <Slider min={10} max={100} startValue={50}></Slider>
     </div>
   );
 }
