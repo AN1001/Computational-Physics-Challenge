@@ -9,10 +9,37 @@
 .slider {
   width: 100%;
   margin: 20px 0;
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 0;
+  background: #d3d3d3;
+  height: 5px;
+  border-radius: 0.1em;
+}
+
+input[type="range" i]::-webkit-slider-thumb {
+  --c: orange; /* active color */
+  --g: 8px; /* the gap */
+  --l: 5px; /* line thickness*/
+  --s: 10px; /* thumb size*/
+
+  -webkit-appearance: none;
+  appearance: none;
+
+  aspect-ratio: 1 !important;
+  border-radius: 20% !important;
+  border: 2px solid #0a53be;
+
+  width: 15px; /* Set a specific slider handle width */
+  height: 15px; /* Slider handle height */
+  background: var(--bs-blue); /* Green background */
+  cursor: pointer; /* Cursor on hover */
+
+  transition: 0.3s !important;
 }
 
 .slider-value {
-  font-size: 20px;
+  font-size: 15px;
   font-weight: bold;
-  color: #333;
+  color: var(--bs-light-text-emphasis);
 }

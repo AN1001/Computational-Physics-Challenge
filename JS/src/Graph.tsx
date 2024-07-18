@@ -4,6 +4,7 @@ import DouglasPeucker from "./DouglasPecker";
 interface Props {
   title: string;
   traces: Trace[];
+  rangeX: number;
 }
 
 interface Line {
@@ -21,7 +22,7 @@ interface Trace {
   line: Line;
 }
 
-function Graph({ title, traces }: Props) {
+function Graph({ title, traces, rangeX }: Props) {
   traces.forEach((trace) => {
     trace.line.shape = "spline";
     [trace.x, trace.y] = DouglasPeucker(trace.x, trace.y, 0.04);
@@ -39,6 +40,7 @@ function Graph({ title, traces }: Props) {
             linecolor: "lightgrey",
             linewidth: 2,
             mirror: true,
+            range: [0, rangeX],
           },
           yaxis: {
             linecolor: "lightgrey",
