@@ -20,6 +20,7 @@ function calc(u: number) {
     (x) =>
       2 + x * Math.tan(0.7) - (9.8 * x ** 2) / (2 * u ** 2 * Math.cos(0.7) ** 2)
   );
+
   return [xPoints, yPoints];
 }
 
@@ -50,8 +51,18 @@ function TaskSetA() {
   return (
     <div className="d-flex flex-column">
       <h1 className="mx-auto mt-3">Tasks 1-2</h1>
-      <div className="mx-auto">
-        <Graph title={"Test Graph"} traces={Traces} rangeX={100}></Graph>
+      <div className="mx-auto d-flex">
+        <Graph title={"No Air Resistance"} traces={Traces} rangeX={100}></Graph>
+        <div>
+          <Slider
+            min={10}
+            max={100}
+            value={DISPLAYED_RANGE}
+            onChange={setDISPLAYED_RANGE}
+            title={"Range"}
+            vertical={true}
+          ></Slider>
+        </div>
       </div>
       <div
         className="position-absolute top-0 end-0"
@@ -67,7 +78,7 @@ function TaskSetA() {
           <MarkdownMathRenderer mathExp={mathExpr2} />
         </Modal>
       </div>
-      <section className="slider-holder">
+      <section className="slider-holder d-flex flex-wrap">
         <Slider
           min={1}
           max={30}
@@ -95,13 +106,6 @@ function TaskSetA() {
           value={LAUNCH_HEIGHT}
           onChange={setLAUNCH_HEIGHT}
           title={"Launch Height"}
-        ></Slider>
-        <Slider
-          min={10}
-          max={100}
-          value={DISPLAYED_RANGE}
-          onChange={setDISPLAYED_RANGE}
-          title={"Displayed Range"}
         ></Slider>
       </section>
     </div>

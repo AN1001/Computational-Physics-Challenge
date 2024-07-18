@@ -5,6 +5,8 @@ interface Props {
   title: string;
   traces: Trace[];
   rangeX: number;
+  height?: number;
+  width?: number;
 }
 
 interface Line {
@@ -22,7 +24,7 @@ interface Trace {
   line: Line;
 }
 
-function Graph({ title, traces, rangeX }: Props) {
+function Graph({ title, traces, rangeX, height, width }: Props) {
   traces.forEach((trace) => {
     trace.line.shape = "spline";
     [trace.x, trace.y] = DouglasPeucker(trace.x, trace.y, 0.04);
@@ -33,8 +35,8 @@ function Graph({ title, traces, rangeX }: Props) {
       <Plot
         data={traces}
         layout={{
-          width: 1000,
-          height: 500,
+          width: width ? width : 1000,
+          height: height ? height : 500,
           title: title,
           xaxis: {
             linecolor: "lightgrey",
