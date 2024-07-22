@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Graph from "./Graph";
 import Modal from "./Modal";
 import Slider from "./Slider";
 import MarkdownMathRenderer from "./md";
+import init, { add } from "cpc-graphs";
 
 //calculations
 //what is even happening here?
@@ -40,6 +41,13 @@ function calculatePoints(
 //end calculations
 
 function TaskSetA() {
+  const [ans, setAns] = useState(0);
+  useEffect(() => {
+    init().then(() => {
+      setAns(add(4, 1));
+    });
+  }, []);
+
   const mathExpr = `$$1.4 \\times 10^{3} \\approx 1500$$`;
   const mathExpr2 = `$$1.5 \\times 10^{3} = 1500$$`;
 
@@ -98,6 +106,8 @@ function TaskSetA() {
             value of
           </p>
           <MarkdownMathRenderer mathExp={mathExpr2} />
+          <p>Here we can see an example of a math problem:</p>
+          <p>4 + 1 = {ans}</p>
         </Modal>
       </div>
       <section className="slider-holder d-flex flex-wrap">
