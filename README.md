@@ -100,7 +100,7 @@ fn main() {
 
 
 
-```typescript
+```Rust
 use std::f64::consts::PI;
 
 fn calculate_launch_angles(X: f64, Y: f64, u: f64) -> Result<(f64, f64), &'static str> {
@@ -144,7 +144,7 @@ fn main() {
 
 
 
-```Rust
+```Typescript
 function calculateLaunchAngles(X: number, Y:number, u:number) {
   const g = 9.81; // acceleration due to gravity in m/s^2
 
