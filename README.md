@@ -13,9 +13,6 @@ Extension ideas:
   - Up an inclined plane with bounces <strong>(seems very hard)</strong>
   - Enter 2 countries and calculates trajectory needed for it to go from a to b and displays it on a 3d mini earth
 
-```diff
-@@ Possibly try using chatGPT to convert JS -> Rust to speed up the work? @@
-```
 
 ```typescript
 function plotTrajectory(theta: number, g: number, u:number, h:number, r:number) {
