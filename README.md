@@ -46,7 +46,7 @@ function plotTrajectory(theta: number, g: number, u:number, h:number, r:number) 
 
   return [xValues, yValues, apogeeX, maxY]
 ```
-```typescript
+```Rust
 use std::f64::consts::PI;
 
 fn plot_trajectory(theta: f64, g: f64, u: f64, h: f64, r: f64) -> (Vec<f64>, Vec<f64>, f64, f64) {
