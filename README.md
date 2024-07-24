@@ -144,7 +144,7 @@ fn main() {
 
 
 
-```typescript
+```Rust
 function calculateLaunchAngles(X: number, Y:number, u:number) {
   const g = 9.81; // acceleration due to gravity in m/s^2
 
@@ -168,7 +168,7 @@ function calculateLaunchAngles(X: number, Y:number, u:number) {
   return [theta1, theta2];
 }
 ```
-```typescript
+```Rust
 
 use std::f64::consts::PI;
 
@@ -225,7 +225,7 @@ function optimumTheta(u:number, g:number, h:number, theta:number) {
   return [theta_opt, R_opt];
 }
 ```
-```typescript
+```Rust
 use std::f64::consts::PI;
 
 fn optimum_theta(u: f64, g: f64, h: f64) -> (f64, f64) {
@@ -340,7 +340,7 @@ function plotTargetTrajectory(g: number, X: number, Y: number, u: number) {
 
 }
 ```
-```typescript
+```Rust
 use std::f64::consts::PI;
 
 fn calculate_launch_angles(X: f64, Y: f64, u: f64) -> Result<(f64, f64), &'static str> {
