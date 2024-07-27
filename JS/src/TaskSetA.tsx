@@ -3,53 +3,16 @@ import Graph from "./Graph";
 import Modal from "./Modal";
 import Slider from "./Slider";
 import MarkdownMathRenderer from "./md";
-import init, { add } from "cpc-graphs";
-
-//calculations
-//what is even happening here?
-function calculatePoints(
-  inital_speed: number,
-  gravity: number,
-  theta: number,
-  height: number
-) {
-  theta = theta * (Math.PI / 180); // convert to rad
-
-  //Uses range equation to find range
-  const Range =
-    ((inital_speed * Math.cos(theta)) / gravity) *
-    (inital_speed * Math.sin(theta) +
-      Math.sqrt((inital_speed * Math.sin(theta)) ** 2 + 2 * gravity * height));
-
-  const num_points = 100;
-  const xPoints = Array.from(
-    { length: num_points },
-    (_, index) => (index * Range) / (num_points - 1)
-  );
-
-  const yPoints = xPoints.map(
-    (x) =>
-      //For every x point, find the Y coord
-      height +
-      x * Math.tan(theta) -
-      (gravity * x ** 2) / (2 * inital_speed ** 2 * Math.cos(theta) ** 2)
-  );
-
-  return [xPoints, yPoints];
-}
-
-//end calculations
+import init, { plot_trajectory } from "cpc-graphs";
 
 function TaskSetA() {
-  const [ans, setAns] = useState(0);
-  useEffect(() => {
-    init().then(() => {
-      setAns(add(4, 1));
-    });
-  }, []);
-
   const mathExpr = `$$1.4 \\times 10^{3} \\approx 1500$$`;
   const mathExpr2 = `$$1.5 \\times 10^{3} = 1500$$`;
+
+  const [xPoints, setXValues] = useState(new Float64Array());
+  const [yPoints, setYValues] = useState(new Float64Array());
+  const [apogeeX, setApogeeXValues] = useState();
+  const [apogeeY, setApogeeYValues] = useState();
 
   const [GRAVITY, setGRAVITY] = useState(9.8);
   const [THETA, setTHETA] = useState(45);
@@ -57,22 +20,42 @@ function TaskSetA() {
   const [LAUNCH_HEIGHT, setLAUNCH_HEIGHT] = useState(2);
   const [DISPLAYED_RANGE, setDISPLAYED_RANGE] = useState(50);
 
-  const [xPoints, yPoints] = calculatePoints(
-    LAUNCH_SPEED,
-    GRAVITY,
-    THETA,
-    LAUNCH_HEIGHT
-  );
+  async function fetchTrajectory() {
+    await init();
+    const trajectory = plot_trajectory(
+      THETA,
+      GRAVITY,
+      LAUNCH_SPEED,
+      LAUNCH_HEIGHT
+    );
+
+    setXValues(trajectory.x_values());
+    setYValues(trajectory.y_values());
+    setApogeeXValues(trajectory.apogee_x());
+    setApogeeYValues(trajectory.max_y());
+  }
+
+  useEffect(() => {
+    fetchTrajectory();
+  }, [GRAVITY, THETA, LAUNCH_SPEED, LAUNCH_HEIGHT]);
 
   const Line2 = {
-    x: xPoints,
-    y: yPoints,
+    x: Array.from(xPoints),
+    y: Array.from(yPoints),
     mode: "lines",
-    name: "with DP",
+    name: "No Air Resistance",
     line: { color: "green" },
   };
 
-  const Traces = [Line2];
+  const apogeeTrace = {
+    x: [apogeeX],
+    y: [apogeeY],
+    mode: "markers",
+    name: "Apogee",
+    marker: { color: "yellowgreen", size: 10 },
+  };
+
+  const Traces = [Line2, apogeeTrace];
 
   return (
     <div className="d-flex flex-column">
@@ -82,6 +65,7 @@ function TaskSetA() {
           title={"No Air Resistance"}
           traces={Traces}
           rangeX={DISPLAYED_RANGE}
+          applyDP={true}
         ></Graph>
         <div>
           <Slider
@@ -107,7 +91,7 @@ function TaskSetA() {
           </p>
           <MarkdownMathRenderer mathExp={mathExpr2} />
           <p>Here we can see an example of a math problem:</p>
-          <p>4 + 1 = {ans}</p>
+          <p>4 + 1 = 5</p>
         </Modal>
       </div>
       <section className="slider-holder d-flex flex-wrap">

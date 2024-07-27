@@ -7,6 +7,7 @@ interface Props {
   rangeX: number;
   height?: number;
   width?: number;
+  applyDP: boolean;
 }
 
 interface Line {
@@ -21,14 +22,20 @@ interface Trace {
   y: number[];
   mode: string;
   name: string;
-  line: Line;
+  line?: Line;
 }
 
-function Graph({ title, traces, rangeX, height, width }: Props) {
+function Graph({ title, traces, rangeX, height, width, applyDP }: Props) {
   traces.forEach((trace) => {
-    trace.line.shape = "spline";
-    [trace.x, trace.y] = DouglasPeucker(trace.x, trace.y, 0.04);
+    if (trace.line) {
+      trace.line.shape = "spline";
+      if (applyDP) {
+        [trace.x, trace.y] = DouglasPeucker(trace.x, trace.y, 0.01);
+      }
+    }
   });
+
+  const rangeY = applyDP ? undefined : rangeX * 0.6;
 
   return (
     <>
@@ -48,6 +55,13 @@ function Graph({ title, traces, rangeX, height, width }: Props) {
             linecolor: "lightgrey",
             linewidth: 2,
             mirror: true,
+            range: [0, rangeY],
+          },
+          showlegend: true,
+          legend: {
+            x: 1,
+            xanchor: "right",
+            y: 1,
           },
         }}
       />

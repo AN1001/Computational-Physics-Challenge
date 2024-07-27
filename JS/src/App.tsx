@@ -2,6 +2,7 @@ import Navbar from "./Navbar";
 import "./App.css";
 import { useState } from "react";
 import TaskSetA from "./TaskSetA";
+import TaskSetB from "./TaskSetB";
 
 function App() {
   const [activePage, setActivePage] = useState("1-2");
@@ -11,7 +12,7 @@ function App() {
       case "1-2":
         return <TaskSetA></TaskSetA>;
       case "3":
-        return <h1>Task 3</h1>;
+        return <TaskSetB></TaskSetB>;
       case "4-7":
         return <h1>Tasks 4-7</h1>;
       case "Extensions":
