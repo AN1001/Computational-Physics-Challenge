@@ -11,7 +11,10 @@ interface Props {
 function Navbar({ changeHome, activeHeader }: Props) {
   return (
     <>
-      <nav className="navbar navbar-expand-lg bg-body-tertiary">
+      <nav
+        className="navbar navbar-expand-lg bg-body-tertiary"
+        style={{ zIndex: 10 }}
+      >
         <div className="container-fluid">
           <a className="navbar-brand" href="#">
             <svg
@@ -90,6 +93,7 @@ function Navbar({ changeHome, activeHeader }: Props) {
               <button
                 className="btn btn-outline-success"
                 type="reset"
+                style={{ marginRight: 10 }}
                 onClick={() =>
                   handleClick(
                     "https://github.com/AN1001/Computational-Physics-Challenge/"
@@ -97,6 +101,17 @@ function Navbar({ changeHome, activeHeader }: Props) {
                 }
               >
                 GitHub
+              </button>
+              <button
+                className="btn btn-outline-success"
+                type="reset"
+                onClick={() =>
+                  handleClick(
+                    "https://github.com/AN1001/Computational-Physics-Challenge/"
+                  )
+                }
+              >
+                Academic Paper
               </button>
             </form>
           </div>

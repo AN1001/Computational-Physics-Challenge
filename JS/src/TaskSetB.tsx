@@ -46,7 +46,7 @@ function TaskSetA() {
   const [LAUNCH_SPEED, setLAUNCH_SPEED] = useState(100);
   const [X, setX] = useState(250);
   const [Y, setY] = useState(300);
-  const [DISPLAYED_RANGE, setDISPLAYED_RANGE] = useState(1050);
+  const [DISPLAYED_RANGE, setDISPLAYED_RANGE] = useState(900);
 
   async function fetchTrajectory() {
     await init();
@@ -76,6 +76,7 @@ function TaskSetA() {
     target.y[0] = Y;
   }
 
+  fetchTrajectory();
   useEffect(() => {
     fetchTrajectory();
   }, [GRAVITY, LAUNCH_SPEED, X, Y]);
@@ -89,8 +90,34 @@ function TaskSetA() {
     target,
   ];
 
+  const [isChecked, setIsChecked] = useState(false);
+  function handleToggle() {
+    setIsChecked(!isChecked);
+  }
+
   return (
     <div className="d-flex flex-column">
+      <div
+        style={{ marginTop: 89, marginLeft: 12 }}
+        className="d-flex flex-column position-absolute top-0 start-0"
+      >
+        <input
+          type="checkbox"
+          className="btn-check"
+          id="btn-check-2-outlined"
+          checked={isChecked}
+          autoComplete="off"
+          onChange={handleToggle}
+        ></input>
+        <label
+          className="btn btn-outline-secondary"
+          htmlFor="btn-check-2-outlined"
+        >
+          Show Points
+        </label>
+        <br></br>
+      </div>
+
       <h1 className="mx-auto mt-3">Task 3</h1>
       <div className="mx-auto d-flex">
         <Graph
@@ -98,6 +125,7 @@ function TaskSetA() {
           traces={Traces}
           rangeX={DISPLAYED_RANGE}
           applyDP={false}
+          displayPoints={isChecked}
         ></Graph>
         <div>
           <Slider

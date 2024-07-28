@@ -11,8 +11,8 @@ function TaskSetA() {
 
   const [xPoints, setXValues] = useState(new Float64Array());
   const [yPoints, setYValues] = useState(new Float64Array());
-  const [apogeeX, setApogeeXValues] = useState();
-  const [apogeeY, setApogeeYValues] = useState();
+  const [apogeeX, setApogeeXValues] = useState(0);
+  const [apogeeY, setApogeeYValues] = useState(0);
 
   const [GRAVITY, setGRAVITY] = useState(9.8);
   const [THETA, setTHETA] = useState(45);
@@ -57,8 +57,34 @@ function TaskSetA() {
 
   const Traces = [Line2, apogeeTrace];
 
+  const [isChecked, setIsChecked] = useState(false);
+  function handleToggle() {
+    setIsChecked(!isChecked);
+  }
+
   return (
     <div className="d-flex flex-column">
+      <div
+        style={{ marginTop: 89, marginLeft: 12 }}
+        className="d-flex flex-column position-absolute top-0 start-0"
+      >
+        <input
+          type="checkbox"
+          className="btn-check"
+          id="btn-check-2-outlined"
+          checked={isChecked}
+          autoComplete="off"
+          onChange={handleToggle}
+        ></input>
+        <label
+          className="btn btn-outline-secondary"
+          htmlFor="btn-check-2-outlined"
+        >
+          Show Points
+        </label>
+        <br></br>
+      </div>
+
       <h1 className="mx-auto mt-3">Tasks 1-2</h1>
       <div className="mx-auto d-flex">
         <Graph
@@ -66,6 +92,7 @@ function TaskSetA() {
           traces={Traces}
           rangeX={DISPLAYED_RANGE}
           applyDP={true}
+          displayPoints={isChecked}
         ></Graph>
         <div>
           <Slider
@@ -78,6 +105,7 @@ function TaskSetA() {
           ></Slider>
         </div>
       </div>
+
       <div
         className="position-absolute top-0 end-0"
         style={{ marginTop: 89, marginRight: 12 }}

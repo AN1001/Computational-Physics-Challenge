@@ -8,6 +8,7 @@ interface Props {
   height?: number;
   width?: number;
   applyDP: boolean;
+  displayPoints: boolean;
 }
 
 interface Line {
@@ -25,10 +26,21 @@ interface Trace {
   line?: Line;
 }
 
-function Graph({ title, traces, rangeX, height, width, applyDP }: Props) {
+function Graph({
+  title,
+  traces,
+  rangeX,
+  height,
+  width,
+  applyDP,
+  displayPoints,
+}: Props) {
   traces.forEach((trace) => {
     if (trace.line) {
       trace.line.shape = "spline";
+      if (displayPoints) {
+        trace.mode = "lines+markers";
+      }
       if (applyDP) {
         [trace.x, trace.y] = DouglasPeucker(trace.x, trace.y, 0.01);
       }
