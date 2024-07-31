@@ -73,7 +73,17 @@ function Navbar({ changeHome, activeHeader }: Props) {
                   }
                   onClick={() => changeHome("4-7")}
                 >
-                  Task 4-7
+                  Task 4
+                </a>
+              </li>
+              <li className="nav-item">
+                <a
+                  className={
+                    activeHeader === "5-7" ? "nav-link active" : "nav-link"
+                  }
+                  onClick={() => changeHome("5-7")}
+                >
+                  Task 5-7
                 </a>
               </li>
               <li className="nav-item">

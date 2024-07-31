@@ -3,97 +3,83 @@ import Graph from "./Graph";
 import Modal from "./Modal";
 import Slider from "./Slider";
 import MarkdownMathRenderer from "./md";
-import init, { plot_target_trajectory } from "cpc-graphs";
+import init, { plot_trajectory } from "cpc-graphs";
 
-class Trace {
-  x: number[];
-  y: number[];
-  mode: string;
-  name: string;
-  line: { color: string; dash: string };
-
-  constructor(name: string, color: string) {
-    this.x = [];
-    this.y = [];
-    this.mode = "lines";
-    this.name = name;
-    this.line = { color: color, dash: "" };
-  }
-}
-
-const targetTemp = {
-  x: [10],
-  y: [10],
-  mode: "markers",
-  name: "Target",
-  marker: { color: "yellowgreen", size: 10 },
-};
-
-function TaskSetB() {
+function TaskSetC() {
   const mathExpr = `$$1.4 \\times 10^{3} \\approx 1500$$`;
   const mathExpr2 = `$$1.5 \\times 10^{3} = 1500$$`;
 
-  const [low_ball_trajectory] = useState(new Trace("Low Ball", "green"));
-  const [high_ball_trajectory] = useState(new Trace("High Ball", "blue"));
-  const [min_speed_trajectory] = useState(new Trace("Min U", "orange"));
-  const [optimal_range_trajectory] = useState(new Trace("Opt Range", "red"));
-  const [bounding_trajectory] = useState(new Trace("Bounding", "purple"));
-  const [target] = useState(targetTemp);
-
-  bounding_trajectory.line.dash = "dot";
+  const [xPoints, setXValues] = useState(new Float64Array());
+  const [yPoints, setYValues] = useState(new Float64Array());
+  const [xMaxPoints, setXMaxValues] = useState(new Float64Array());
+  const [yMaxPoints, setYMaxValues] = useState(new Float64Array());
+  const [apogeeX, setApogeeXValues] = useState(0);
+  const [apogeeY, setApogeeYValues] = useState(0);
 
   const [GRAVITY, setGRAVITY] = useState(9.8);
-  const [LAUNCH_SPEED, setLAUNCH_SPEED] = useState(100);
-  const [X, setX] = useState(250);
-  const [Y, setY] = useState(300);
-  const [DISPLAYED_RANGE, setDISPLAYED_RANGE] = useState(900);
+  const [THETA, setTHETA] = useState(64);
+  const [LAUNCH_SPEED, setLAUNCH_SPEED] = useState(10);
+  const [LAUNCH_HEIGHT, setLAUNCH_HEIGHT] = useState(2);
+  const [DISPLAYED_RANGE, setDISPLAYED_RANGE] = useState(50);
 
   async function fetchTrajectory() {
     await init();
-    const trajectories: any[] = plot_target_trajectory(
+    const trajectory = plot_trajectory(
+      THETA,
       GRAVITY,
-      X,
-      Y,
-      LAUNCH_SPEED
+      LAUNCH_SPEED,
+      LAUNCH_HEIGHT
     );
 
-    low_ball_trajectory.x = trajectories[0];
-    low_ball_trajectory.y = trajectories[2];
-
-    high_ball_trajectory.x = trajectories[0];
-    high_ball_trajectory.y = trajectories[3];
-
-    min_speed_trajectory.x = trajectories[0];
-    min_speed_trajectory.y = trajectories[1];
-
-    optimal_range_trajectory.x = trajectories[0];
-    optimal_range_trajectory.y = trajectories[4];
-
-    bounding_trajectory.x = trajectories[0];
-    bounding_trajectory.y = trajectories[5];
-
-    target.x[0] = X;
-    target.y[0] = Y;
+    setXValues(trajectory.x_values());
+    setYValues(trajectory.y_values());
+    setXMaxValues(trajectory.opt_x_values());
+    setYMaxValues(trajectory.opt_y_values());
+    setApogeeXValues(trajectory.apogee_x());
+    setApogeeYValues(trajectory.max_y());
+    /*
+        opt_x_values: Float64Array::from(opt_x_values.as_slice()),
+        opt_y_values: Float64Array::from(opt_y_values.as_slice()),
+        apogee_x,
+        max_y,
+        s_max,
+        s
+    */
   }
 
-  fetchTrajectory();
   useEffect(() => {
     fetchTrajectory();
-  }, [GRAVITY, LAUNCH_SPEED, X, Y]);
+  }, [GRAVITY, THETA, LAUNCH_SPEED, LAUNCH_HEIGHT]);
 
-  const Traces = [
-    low_ball_trajectory,
-    high_ball_trajectory,
-    min_speed_trajectory,
-    optimal_range_trajectory,
-    bounding_trajectory,
-    target,
-  ];
+  const path = {
+    x: Array.from(xPoints),
+    y: Array.from(yPoints),
+    mode: "lines",
+    name: "No Air Resistance",
+    line: { color: "green" },
+  };
+
+  const opt_path = {
+    x: Array.from(xMaxPoints),
+    y: Array.from(yMaxPoints),
+    mode: "lines",
+    name: "Max Range",
+    line: { color: "orange" },
+  };
+
+  const apogeeTrace = {
+    x: [apogeeX],
+    y: [apogeeY],
+    mode: "markers",
+    name: "Apogee",
+    marker: { color: "yellowgreen", size: 10 },
+  };
+
+  const Traces = [path, opt_path, apogeeTrace];
 
   const [isChecked, setIsChecked] = useState(false);
   function handleToggle() {
     setIsChecked(!isChecked);
-    console.log(isChecked);
   }
 
   return (
@@ -119,19 +105,19 @@ function TaskSetB() {
         <br></br>
       </div>
 
-      <h1 className="mx-auto mt-3">Task 3</h1>
+      <h1 className="mx-auto mt-3">Tasks 4</h1>
       <div className="mx-auto d-flex">
         <Graph
-          title={"Fixed Position Target Model"}
+          title={"No Air Resistance"}
           traces={Traces}
           rangeX={DISPLAYED_RANGE}
-          applyDP={false}
+          applyDP={true}
           displayPoints={isChecked}
         ></Graph>
         <div>
           <Slider
             min={5}
-            max={2000}
+            max={300}
             value={DISPLAYED_RANGE}
             onChange={setDISPLAYED_RANGE}
             title={"Range"}
@@ -139,11 +125,12 @@ function TaskSetB() {
           ></Slider>
         </div>
       </div>
+
       <div
         className="position-absolute top-0 end-0"
         style={{ marginTop: 89, marginRight: 12 }}
       >
-        <Modal title="Task 3">
+        <Modal title="Task 4">
           <p>So we decided to use the approximation</p>
           <MarkdownMathRenderer mathExp={mathExpr} />
           <p>
@@ -165,17 +152,10 @@ function TaskSetB() {
         ></Slider>
         <Slider
           min={1}
-          max={300}
-          value={Y}
-          onChange={setY}
-          title={"Point Y"}
-        ></Slider>
-        <Slider
-          min={1}
-          max={300}
-          value={X}
-          onChange={setX}
-          title={"Point X"}
+          max={89}
+          value={THETA}
+          onChange={setTHETA}
+          title={"Launch Angle"}
         ></Slider>
         <Slider
           min={10}
@@ -184,9 +164,16 @@ function TaskSetB() {
           onChange={setLAUNCH_SPEED}
           title={"Launch Speed"}
         ></Slider>
+        <Slider
+          min={0}
+          max={50}
+          value={LAUNCH_HEIGHT}
+          onChange={setLAUNCH_HEIGHT}
+          title={"Launch Height"}
+        ></Slider>
       </section>
     </div>
   );
 }
 
-export default TaskSetB;
+export default TaskSetC;

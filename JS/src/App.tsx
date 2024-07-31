@@ -3,6 +3,7 @@ import "./App.css";
 import { useState } from "react";
 import TaskSetA from "./TaskSetA";
 import TaskSetB from "./TaskSetB";
+import TaskSetC from "./TaskSetC";
 
 function App() {
   const [activePage, setActivePage] = useState("1-2");
@@ -14,7 +15,9 @@ function App() {
       case "3":
         return <TaskSetB></TaskSetB>;
       case "4-7":
-        return <h1>Tasks 4-7</h1>;
+        return <TaskSetC></TaskSetC>;
+      case "5-7":
+        return <h1>Null</h1>;
       case "Extensions":
         return <h1>Extensions</h1>;
       default:
