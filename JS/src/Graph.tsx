@@ -40,6 +40,8 @@ function Graph({
       trace.line.shape = "spline";
       if (displayPoints) {
         trace.mode = "lines+markers";
+      } else {
+        trace.mode = "lines";
       }
       if (applyDP) {
         [trace.x, trace.y] = DouglasPeucker(trace.x, trace.y, 0.01);

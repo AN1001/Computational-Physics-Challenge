@@ -78,9 +78,6 @@ function TaskSetC() {
   const Traces = [path, opt_path, apogeeTrace];
 
   const [isChecked, setIsChecked] = useState(false);
-  function handleToggle() {
-    setIsChecked(!isChecked);
-  }
 
   return (
     <div className="d-flex flex-column">
@@ -94,7 +91,7 @@ function TaskSetC() {
           id="btn-check-2-outlined"
           checked={isChecked}
           autoComplete="off"
-          onChange={handleToggle}
+          onChange={() => setIsChecked(!isChecked)}
         ></input>
         <label
           className="btn btn-outline-secondary"

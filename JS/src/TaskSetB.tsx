@@ -93,7 +93,6 @@ function TaskSetB() {
   const [isChecked, setIsChecked] = useState(false);
   function handleToggle() {
     setIsChecked(!isChecked);
-    console.log(isChecked);
   }
 
   return (
