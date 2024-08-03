@@ -4,7 +4,7 @@ import Modal from "./Modal";
 import Slider from "./Slider";
 import MarkdownMathRenderer from "./md";
 // @ts-ignore
-import init, { plot_trajectory } from "cpc-graphs";
+import init, { plot_rt_trajectory } from "cpc-graphs";
 
 function TaskSetA() {
   const mathExpr = `$$1.4 \\times 10^{3} \\approx 1500$$`;
@@ -16,29 +16,24 @@ function TaskSetA() {
   const [apogeeY, setApogeeYValues] = useState(0);
 
   const [GRAVITY, setGRAVITY] = useState(9.8);
-  const [THETA, setTHETA] = useState(45);
   const [LAUNCH_SPEED, setLAUNCH_SPEED] = useState(10);
   const [LAUNCH_HEIGHT, setLAUNCH_HEIGHT] = useState(2);
   const [DISPLAYED_RANGE, setDISPLAYED_RANGE] = useState(50);
 
   async function fetchTrajectory() {
     await init();
-    const trajectory = plot_trajectory(
-      THETA,
-      GRAVITY,
-      LAUNCH_SPEED,
-      LAUNCH_HEIGHT
-    );
+    const trajectory = plot_rt_trajectory(GRAVITY, LAUNCH_SPEED);
+    console.log(trajectory[0]);
 
-    setXValues(trajectory.x_values());
-    setYValues(trajectory.y_values());
-    setApogeeXValues(trajectory.apogee_x());
-    setApogeeYValues(trajectory.max_y());
+    setXValues(trajectory[0]);
+    setYValues(trajectory[1][0]);
+    setApogeeXValues(trajectory[1][1]);
+    setApogeeYValues(trajectory[1][2]);
   }
 
   useEffect(() => {
     fetchTrajectory();
-  }, [GRAVITY, THETA, LAUNCH_SPEED, LAUNCH_HEIGHT]);
+  }, [GRAVITY, LAUNCH_SPEED, LAUNCH_HEIGHT]);
 
   const Line2 = {
     x: Array.from(xPoints),
@@ -86,10 +81,10 @@ function TaskSetA() {
         <br></br>
       </div>
 
-      <h1 className="mx-auto mt-3">Tasks 1-2</h1>
+      <h1 className="mx-auto mt-3">Tasks 5-7</h1>
       <div className="mx-auto d-flex">
         <Graph
-          title={"No Air Resistance"}
+          title={"Range Against Time"}
           traces={Traces}
           rangeX={DISPLAYED_RANGE}
           applyDP={true}
@@ -130,13 +125,6 @@ function TaskSetA() {
           value={GRAVITY}
           onChange={setGRAVITY}
           title={"Gravity"}
-        ></Slider>
-        <Slider
-          min={1}
-          max={89}
-          value={THETA}
-          onChange={setTHETA}
-          title={"Launch Angle"}
         ></Slider>
         <Slider
           min={10}

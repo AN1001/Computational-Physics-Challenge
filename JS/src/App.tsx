@@ -4,6 +4,7 @@ import { useState } from "react";
 import TaskSetA from "./TaskSetA";
 import TaskSetB from "./TaskSetB";
 import TaskSetC from "./TaskSetC";
+import TaskSetD from "./TaskSetD";
 
 function App() {
   const [activePage, setActivePage] = useState("1-2");
@@ -17,7 +18,7 @@ function App() {
       case "4-7":
         return <TaskSetC></TaskSetC>;
       case "5-7":
-        return <h1>Null</h1>;
+        return <TaskSetD></TaskSetD>;
       case "Extensions":
         return <h1>Extensions</h1>;
       default:

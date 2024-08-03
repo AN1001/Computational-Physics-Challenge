@@ -3,6 +3,7 @@ import Graph from "./Graph";
 import Modal from "./Modal";
 import Slider from "./Slider";
 import MarkdownMathRenderer from "./md";
+// @ts-ignore
 import init, { plot_target_trajectory } from "cpc-graphs";
 
 class Trace {
