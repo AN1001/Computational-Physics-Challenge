@@ -119,7 +119,7 @@ function TaskSetB() {
         <br></br>
       </div>
 
-      <h1 className="mx-auto mt-3">Task 3</h1>
+      <h1 className="mx-auto mt-3">Tasks 3 and 5</h1>
       <div className="mx-auto d-flex">
         <Graph
           title={"Fixed Position Target Model"}

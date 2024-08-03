@@ -21,7 +21,7 @@ function TaskSetC() {
   const [THETA, setTHETA] = useState(64);
   const [LAUNCH_SPEED, setLAUNCH_SPEED] = useState(10);
   const [LAUNCH_HEIGHT, setLAUNCH_HEIGHT] = useState(2);
-  const [DISPLAYED_RANGE, setDISPLAYED_RANGE] = useState(50);
+  const [DISPLAYED_RANGE, setDISPLAYED_RANGE] = useState(18);
 
   async function fetchTrajectory() {
     await init();
@@ -103,7 +103,7 @@ function TaskSetC() {
         <br></br>
       </div>
 
-      <h1 className="mx-auto mt-3">Tasks 4</h1>
+      <h1 className="mx-auto mt-3">Tasks 4 and 6</h1>
       <div className="mx-auto d-flex">
         <Graph
           title={"No Air Resistance"}

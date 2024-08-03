@@ -63,7 +63,7 @@ function Navbar({ changeHome, activeHeader }: Props) {
                   }
                   onClick={() => changeHome("3")}
                 >
-                  Task 3
+                  Task 3, 5
                 </a>
               </li>
               <li className="nav-item">
@@ -73,7 +73,7 @@ function Navbar({ changeHome, activeHeader }: Props) {
                   }
                   onClick={() => changeHome("4-7")}
                 >
-                  Task 4
+                  Task 4, 6
                 </a>
               </li>
               <li className="nav-item">
@@ -83,7 +83,7 @@ function Navbar({ changeHome, activeHeader }: Props) {
                   }
                   onClick={() => changeHome("5-7")}
                 >
-                  Task 5-7
+                  Task 7
                 </a>
               </li>
               <li className="nav-item">
