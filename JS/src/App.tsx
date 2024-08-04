@@ -22,7 +22,7 @@ function App() {
       case "Extensions":
         return <h1>Extensions</h1>;
       default:
-        return <h1>Error</h1>;
+        return <h1>Error, this page does not exist</h1>;
     }
   };
 
