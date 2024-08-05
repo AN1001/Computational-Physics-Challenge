@@ -4,7 +4,7 @@ import Modal from "./Modal";
 import Slider from "./Slider";
 import MarkdownMathRenderer from "./md";
 // @ts-ignore
-import init, { plot_rt_trajectory } from "cpc-graphs";
+import init, { plot_rt_trajectory, plot_trajectory } from "cpc-graphs";
 
 function TaskSetA() {
   const mathExpr = `$$1.4 \\times 10^{3} \\approx 1500$$`;
@@ -23,6 +23,8 @@ function TaskSetA() {
   const [xPoints6, setX6Values] = useState(new Float64Array());
   const [yPoints6, setY6Values] = useState(new Float64Array());
 
+  const [graphPoints, setGraphPoints] = useState([[[0], [0]]]);
+
   const [apogeeX1, setApogeeX1Values] = useState(0);
   const [apogeeY1, setApogeeY1Values] = useState(0);
   const [apogeeX2, setApogeeX2Values] = useState(0);
@@ -39,6 +41,7 @@ function TaskSetA() {
   const [LAUNCH_SPEED, setLAUNCH_SPEED] = useState(10);
   const [LAUNCH_HEIGHT, setLAUNCH_HEIGHT] = useState(2);
   const [DISPLAYED_RANGE, setDISPLAYED_RANGE] = useState(3);
+  const [DISPLAYED_RANGE_1, setDISPLAYED_RANGE_1] = useState(12.8);
 
   function setValues(arr: Float64Array) {
     setX1Values(arr);
@@ -48,6 +51,23 @@ function TaskSetA() {
     setX5Values(arr);
     setX6Values(arr);
   }
+
+  function setGraphValues() {
+    let graphs: any = [];
+    [30, 45, 60, 70.5, 78, 85].forEach((theta) => {
+      const trajectory = plot_trajectory(
+        theta,
+        GRAVITY,
+        LAUNCH_SPEED,
+        LAUNCH_HEIGHT
+      );
+      let x = trajectory.x_values();
+      let y = trajectory.y_values();
+      graphs.push([x, y, theta]);
+    });
+    setGraphPoints(graphs);
+  }
+
   async function fetchTrajectory() {
     await init();
     const trajectory = plot_rt_trajectory(
@@ -79,6 +99,7 @@ function TaskSetA() {
 
   useEffect(() => {
     fetchTrajectory();
+    setGraphValues();
   }, [GRAVITY, LAUNCH_SPEED, LAUNCH_HEIGHT, DISPLAYED_RANGE]);
 
   const Line1 = {
@@ -188,6 +209,20 @@ function TaskSetA() {
     apogeeTrace6,
   ];
 
+  let Traces2: any[] = [];
+  const colors = ["green", "pink", "blue", "indigo", "orange", "yellowgreen"];
+
+  graphPoints.forEach((arr, index) => {
+    const Trace = {
+      x: arr[0],
+      y: arr[1],
+      mode: "lines",
+      name: `Range ${arr[2]}°`,
+      line: { color: colors[index] },
+    };
+    Traces2.push(Trace);
+  });
+
   const [isChecked, setIsChecked] = useState(false);
   function handleToggle() {
     setIsChecked(!isChecked);
@@ -217,6 +252,26 @@ function TaskSetA() {
       </div>
 
       <h1 className="mx-auto mt-3">Task 7</h1>
+      <div className="mx-auto d-flex">
+        <Graph
+          title={"Range Against Time"}
+          traces={Traces2}
+          rangeX={DISPLAYED_RANGE_1}
+          applyDP={true}
+          displayPoints={isChecked}
+        ></Graph>
+        <div>
+          <Slider
+            min={2}
+            max={40}
+            value={DISPLAYED_RANGE_1}
+            onChange={setDISPLAYED_RANGE_1}
+            title={"Range"}
+            vertical={true}
+          ></Slider>
+        </div>
+      </div>
+
       <div className="mx-auto d-flex">
         <Graph
           title={"Range Against Time"}
