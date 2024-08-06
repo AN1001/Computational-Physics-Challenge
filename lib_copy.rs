@@ -218,12 +218,12 @@ pub fn plot_target_trajectory(g: f64, x1: f64, y1: f64, u: f64) -> Result<Array,
 }
 
 #[wasm_bindgen]
-pub fn plot_rt_trajectory(g: f64, u: f64) -> Result<Array, JsValue> {
+pub fn plot_rt_trajectory(g: f64, u: f64, t: f64) -> Result<Array, JsValue> {
     const ANGLES: [f64; 6] = [30.0, 45.0, 60.0, 70.55, 78.0, 85.0];
     let result = Array::new();
 
-    let num_points = 150;
-    let t_flight: f64 = 10.0;
+    let num_points = 250;
+    let t_flight: f64 = t;
 
     let t_values: Vec<f64> = (0..num_points)
         .map(|i| (i as f64 * t_flight) / (num_points as f64 - 1.0))
