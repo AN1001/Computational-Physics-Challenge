@@ -89,6 +89,26 @@ function Navbar({ changeHome, activeHeader }: Props) {
               <li className="nav-item">
                 <a
                   className={
+                    activeHeader === "8" ? "nav-link active" : "nav-link"
+                  }
+                  onClick={() => changeHome("8")}
+                >
+                  Task 8
+                </a>
+              </li>
+              <li className="nav-item">
+                <a
+                  className={
+                    activeHeader === "9" ? "nav-link active" : "nav-link"
+                  }
+                  onClick={() => changeHome("9")}
+                >
+                  Task 9
+                </a>
+              </li>
+              <li className="nav-item">
+                <a
+                  className={
                     activeHeader === "Extensions"
                       ? "nav-link active"
                       : "nav-link"
