@@ -4,7 +4,7 @@ import Modal from "./Modal";
 import Slider from "./Slider";
 import MarkdownMathRenderer from "./md";
 // @ts-ignore
-import init, { plot_trajectory } from "cpc-graphs";
+import init, { ball_trajectory } from "cpc-graphs";
 
 function TaskSetA() {
   const mathExpr = `$$1.4 \\times 10^{3} \\approx 1500$$`;
@@ -12,33 +12,34 @@ function TaskSetA() {
 
   const [xPoints, setXValues] = useState(new Float64Array());
   const [yPoints, setYValues] = useState(new Float64Array());
-  const [apogeeX, setApogeeXValues] = useState(0);
-  const [apogeeY, setApogeeYValues] = useState(0);
 
   const [GRAVITY, setGRAVITY] = useState(9.8);
   const [THETA, setTHETA] = useState(45);
   const [LAUNCH_SPEED, setLAUNCH_SPEED] = useState(10);
   const [LAUNCH_HEIGHT, setLAUNCH_HEIGHT] = useState(2);
+  const [COEFFICIENT_E, set_COEFFICIENT_E] = useState(0.7);
   const [DISPLAYED_RANGE, setDISPLAYED_RANGE] = useState(50);
 
   async function fetchTrajectory() {
     await init();
-    const trajectory = plot_trajectory(
-      THETA,
+    let vx = LAUNCH_SPEED * Math.cos(THETA * (Math.PI / 180));
+    let vy = LAUNCH_SPEED * Math.sin(THETA * (Math.PI / 180));
+
+    const trajectory = ball_trajectory(
       GRAVITY,
-      LAUNCH_SPEED,
-      LAUNCH_HEIGHT
+      COEFFICIENT_E,
+      LAUNCH_HEIGHT,
+      vx,
+      vy
     );
 
-    setXValues(trajectory.x_values());
-    setYValues(trajectory.y_values());
-    setApogeeXValues(trajectory.apogee_x());
-    setApogeeYValues(trajectory.max_y());
+    setXValues(trajectory[0]);
+    setYValues(trajectory[1]);
   }
 
   useEffect(() => {
     fetchTrajectory();
-  }, [GRAVITY, THETA, LAUNCH_SPEED, LAUNCH_HEIGHT]);
+  }, [GRAVITY, THETA, LAUNCH_SPEED, LAUNCH_HEIGHT, COEFFICIENT_E]);
 
   const Line2 = {
     x: Array.from(xPoints),
@@ -48,15 +49,7 @@ function TaskSetA() {
     line: { color: "green" },
   };
 
-  const apogeeTrace = {
-    x: [apogeeX],
-    y: [apogeeY],
-    mode: "markers",
-    name: "Apogee",
-    marker: { color: "yellowgreen", size: 10 },
-  };
-
-  const Traces = [Line2, apogeeTrace];
+  const Traces = [Line2];
 
   const [isChecked, setIsChecked] = useState(false);
   function handleToggle() {
@@ -86,10 +79,10 @@ function TaskSetA() {
         <br></br>
       </div>
 
-      <h1 className="mx-auto mt-3">Tasks 1-2</h1>
+      <h1 className="mx-auto mt-3">Task 8</h1>
       <div className="mx-auto d-flex">
         <Graph
-          title={"No Air Resistance"}
+          title={"A Bouncing Ball"}
           traces={Traces}
           rangeX={DISPLAYED_RANGE}
           applyDP={true}
@@ -151,6 +144,13 @@ function TaskSetA() {
           value={LAUNCH_HEIGHT}
           onChange={setLAUNCH_HEIGHT}
           title={"Launch Height"}
+        ></Slider>
+        <Slider
+          min={0.1}
+          max={1}
+          value={COEFFICIENT_E}
+          onChange={set_COEFFICIENT_E}
+          title={"Coefficient e"}
         ></Slider>
       </section>
     </div>

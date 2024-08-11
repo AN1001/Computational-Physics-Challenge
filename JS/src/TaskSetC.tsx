@@ -106,7 +106,7 @@ function TaskSetC() {
       <h1 className="mx-auto mt-3">Tasks 4 and 6</h1>
       <div className="mx-auto d-flex">
         <Graph
-          title={"No Air Resistance"}
+          title={"Max Range"}
           traces={Traces}
           rangeX={DISPLAYED_RANGE}
           applyDP={true}
