@@ -20,16 +20,17 @@ function TaskSetC() {
   const [LAUNCH_SPEED, setLAUNCH_SPEED] = useState(30);
   const [LAUNCH_HEIGHT, setLAUNCH_HEIGHT] = useState(2);
   const [DISPLAYED_RANGE, setDISPLAYED_RANGE] = useState(100);
+  const [AIR, setAIR] = useState(100);
 
   async function fetchTrajectory() {
     await init();
     const trajectory = calculate_projectile_trajectory(
       GRAVITY,
-      20,
+      AIR,
       LAUNCH_HEIGHT,
       LAUNCH_SPEED,
       THETA,
-      45.1
+      AIR
     );
 
     setXValues(trajectory[0]);
@@ -51,7 +52,7 @@ function TaskSetC() {
 
   useEffect(() => {
     fetchTrajectory();
-  }, [GRAVITY, THETA, LAUNCH_SPEED, LAUNCH_HEIGHT]);
+  }, [GRAVITY, THETA, LAUNCH_SPEED, LAUNCH_HEIGHT, AIR]);
 
   const path = {
     x: Array.from(xPoints),
@@ -161,6 +162,20 @@ function TaskSetC() {
           value={LAUNCH_HEIGHT}
           onChange={setLAUNCH_HEIGHT}
           title={"Launch Height"}
+        ></Slider>
+        <Slider
+          min={10}
+          max={30}
+          value={AIR}
+          onChange={setAIR}
+          title={"Air Resistance C"}
+        ></Slider>
+        <Slider
+          min={0}
+          max={50}
+          value={20}
+          onChange={() => {}}
+          title={"Mass"}
         ></Slider>
       </section>
     </div>
