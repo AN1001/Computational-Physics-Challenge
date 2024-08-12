@@ -16,6 +16,8 @@ function TaskSetC() {
   const [yMaxPoints, setYMaxValues] = useState(new Float64Array());
   const [apogeeX, setApogeeXValues] = useState(0);
   const [apogeeY, setApogeeYValues] = useState(0);
+  const [s, setSValue] = useState(0);
+  const [sMax, setSMaxValue] = useState(0);
 
   const [GRAVITY, setGRAVITY] = useState(9.8);
   const [THETA, setTHETA] = useState(64);
@@ -38,6 +40,8 @@ function TaskSetC() {
     setYMaxValues(trajectory.opt_y_values());
     setApogeeXValues(trajectory.apogee_x());
     setApogeeYValues(trajectory.max_y());
+    setSValue(trajectory.s());
+    setSMaxValue(trajectory.s_max());
     /*
         opt_x_values: Float64Array::from(opt_x_values.as_slice()),
         opt_y_values: Float64Array::from(opt_y_values.as_slice()),
@@ -104,6 +108,12 @@ function TaskSetC() {
       </div>
 
       <h1 className="mx-auto mt-3">Tasks 4 and 6</h1>
+      <div className="d-flex justify-content-center align-items-center">
+        <div className="d-flex">
+          <div className="mx-4">S = {s}</div>
+          <div className="mx-4">S Max = {sMax}</div>
+        </div>
+      </div>
       <div className="mx-auto d-flex">
         <Graph
           title={"Max Range"}

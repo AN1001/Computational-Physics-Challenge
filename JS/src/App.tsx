@@ -1,15 +1,20 @@
 import Navbar from "./Navbar";
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TaskSetA from "./TaskSetA";
 import TaskSetB from "./TaskSetB";
 import TaskSetC from "./TaskSetC";
 import TaskSetD from "./TaskSetD";
 import TaskSetE from "./TaskSetE";
 import TaskSetF from "./TaskSetF";
+import GlobeHolder from "./GlobeHolder";
+import Slider from "./Slider";
 
 function App() {
-  const [activePage, setActivePage] = useState("1-2");
+  let [activePage, setActivePage] = useState("1-2");
+  const [lat, setLat] = useState(100);
+  const [long, setLong] = useState(-50);
+  const [theta, settheta] = useState(0);
 
   const renderPage = () => {
     switch (activePage) {
@@ -26,11 +31,44 @@ function App() {
       case "9":
         return <TaskSetF></TaskSetF>;
       case "Extensions":
-        return <h1>Extensions</h1>;
+        return (
+          <>
+            <div className="d-flex flex-wrap position-absolute">
+              <Slider
+                min={-90}
+                max={90}
+                onChange={setLat}
+                value={lat}
+                title="Latitude"
+              ></Slider>
+              <Slider
+                min={-90}
+                max={90}
+                onChange={setLong}
+                value={long}
+                title="Longitude"
+              ></Slider>
+              <Slider
+                min={-90}
+                max={90}
+                onChange={settheta}
+                value={theta}
+                title="Theta"
+              ></Slider>
+            </div>
+            <GlobeHolder lat={lat} long={long}></GlobeHolder>
+          </>
+        );
       default:
         return <h1>Error, this page does not exist</h1>;
     }
   };
+
+  useEffect(() => {
+    activePage = "Extensions2";
+    renderPage();
+    console.log("use2");
+  }, [lat, long]);
 
   return (
     <div>

@@ -7,8 +7,9 @@ import MarkdownMathRenderer from "./md";
 import init, { plot_trajectory } from "cpc-graphs";
 
 function TaskSetA() {
-  const mathExpr = `$$1.4 \\times 10^{3} \\approx 1500$$`;
-  const mathExpr2 = `$$1.5 \\times 10^{3} = 1500$$`;
+  const mathExpr = `$$R = (u^2 \\times\\  sin(2θ)) / g$$`;
+  const mathExpr2 = `$$h(t) = h_0 + u \\times\\ sin(θ) \\times\\ $$`;
+  const mathExpr3 = `$$t - (1/2) \\times\\  g \\times\\  t^2$$`;
 
   const [xPoints, setXValues] = useState(new Float64Array());
   const [yPoints, setYValues] = useState(new Float64Array());
@@ -112,15 +113,24 @@ function TaskSetA() {
         style={{ marginTop: 89, marginRight: 12 }}
       >
         <Modal title="Tasks 1 and 2">
-          <p>So we decided to use the approximation</p>
+          <p>
+            The model is implemented with a fixed time increment Delta_t,
+            iterating through time steps to calculate and plot x and y. The
+            graph of the projectile's trajectory updates automatically when any
+            input parameter is changed.
+          </p>
           <MarkdownMathRenderer mathExp={mathExpr} />
           <p>
-            to save on time and resources, which was not that far from the real
-            value of
+            Our Rust implementation, plot_trajectory, takes four input
+            parameters: theta (angle of projection in degrees), g (acceleration
+            due to gravity), u (initial velocity), and h (initial height). The
+            function returns a Trajectory struct containing the x and y
+            coordinates of the projectile's trajectory, as well as additional
+            metadata.
           </p>
           <MarkdownMathRenderer mathExp={mathExpr2} />
-          <p>Here we can see an example of a math problem:</p>
-          <p>4 + 1 = 5</p>
+          <MarkdownMathRenderer mathExp={mathExpr3} />
+          <image></image>
         </Modal>
       </div>
       <section className="slider-holder d-flex flex-wrap">
