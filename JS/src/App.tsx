@@ -6,6 +6,7 @@ import TaskSetB from "./TaskSetB";
 import TaskSetC from "./TaskSetC";
 import TaskSetD from "./TaskSetD";
 import TaskSetE from "./TaskSetE";
+import TaskSetF from "./TaskSetF";
 
 function App() {
   const [activePage, setActivePage] = useState("1-2");
@@ -23,7 +24,7 @@ function App() {
       case "8":
         return <TaskSetE></TaskSetE>;
       case "9":
-        return <h1>Task 9</h1>;
+        return <TaskSetF></TaskSetF>;
       case "Extensions":
         return <h1>Extensions</h1>;
       default:

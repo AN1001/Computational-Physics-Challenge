@@ -273,3 +273,135 @@ pub fn plot_rt_trajectory(g: f64, u: f64, t: f64) -> Result<Array, JsValue> {
 
     Ok(result)
 }
+
+#[wasm_bindgen]
+pub fn ball_trajectory(g: f64, e: f64, h0: f64, vy: f64, vx: f64) -> Result<Array, JsValue> {
+    let mut time = Vec::<f64>::new();
+    let mut height = Vec::<f64>::new();
+    let mut horizontal = Vec::<f64>::new();
+
+    let t_max = 16.0;
+    let dt = 0.01;
+    let vx = vx;
+    let mut t = 0.0;
+    let mut h = h0;
+    let mut v = vy;
+    let mut x = 0.0;
+    let mut count = 0;
+
+    const MAX_BOUNCES: u32 = 8;
+
+    height.push(h);
+    horizontal.push(0.0);
+
+    while t < t_max {
+        h += v * dt;  // Update height
+        v -= g * dt;  // Update velocity
+
+        x += vx * dt; // Update horizontal displacement
+
+        // If the ball hits the ground...
+        if h <= 0.0 {
+            h = 0.0;
+            v = -e * v;  // Reverse and reduce velocity
+            count += 1;
+        }
+
+        time.push(t);
+        height.push(h);
+        horizontal.push(x);
+
+        t += dt;
+        if count == MAX_BOUNCES {  // Stop after 3 collisions
+            break;
+        }
+    }
+
+    let result = Array::new();
+    result.push(&Float64Array::from(horizontal.as_slice()));
+    result.push(&Float64Array::from(height.as_slice()));
+
+    Ok(result)
+}
+
+#[wasm_bindgen]
+pub fn calculate_projectile_trajectory(
+    g: f64,
+    total_time: f64,
+    y0: f64,
+    v0: f64,
+    angle: f64,
+    k: f64
+) -> Result<Array, JsValue> {
+    let dt: f64 = 0.01;
+    let num_steps = (total_time / dt) as usize;
+    let m: f64 = 1000.0;
+    let x0: f64 = 0.0;
+
+    let mut x_drag_free = vec![0.0; num_steps];
+    let mut y_drag_free = vec![0.0; num_steps];
+    let mut x_drag = vec![0.0; num_steps];
+    let mut y_drag = vec![0.0; num_steps];
+
+    let vx0 = v0 * angle.to_radians().cos();
+    let vy0 = v0 * angle.to_radians().sin();
+
+    // Initial conditions (drag-free)
+    x_drag_free[0] = x0;
+    y_drag_free[0] = y0;
+    let vx_drag_free = vx0;
+    let mut vy_drag_free = vy0;
+
+    // Initial conditions (drag)
+    x_drag[0] = x0;
+    y_drag[0] = y0;
+    let mut vx_drag = vx0;
+    let mut vy_drag = vy0;
+
+    // Initial acceleration (drag)
+    let mut v_initial = (vx_drag.powi(2) + vy_drag.powi(2)).sqrt();
+    let mut ax_drag = -k * v_initial * vx_drag / m;
+    let mut ay_drag = -g - k * v_initial * vy_drag / m;
+
+    for i in 1..num_steps {
+        x_drag_free[i] = x_drag_free[i - 1] + vx_drag_free * dt;
+        y_drag_free[i] = y_drag_free[i - 1] + vy_drag_free * dt - 0.5 * g * dt.powi(2);
+        vy_drag_free -= g * dt;
+    
+        if y_drag_free[i] < 0.0 {
+            x_drag_free.truncate(i); // Stop adding points after hitting the ground
+            y_drag_free.truncate(i);
+            break;
+        }
+    }
+    
+    // Drag model
+    for i in 1..num_steps {
+        x_drag[i] = x_drag[i - 1] + vx_drag * dt + 0.5 * ax_drag * dt.powi(2);
+        y_drag[i] = y_drag[i - 1] + vy_drag * dt + 0.5 * ay_drag * dt.powi(2);
+    
+        let vx_drag_mid = vx_drag + 0.5 * ax_drag * dt;
+        let vy_drag_mid = vy_drag + 0.5 * ay_drag * dt;
+    
+        v_initial = (vx_drag_mid.powi(2) + vy_drag_mid.powi(2)).sqrt();
+        ax_drag = -k * v_initial * vx_drag_mid / m;
+        ay_drag = -g - k * v_initial * vy_drag_mid / m;
+    
+        vx_drag += ax_drag * dt;
+        vy_drag += ay_drag * dt;
+    
+        if y_drag[i] < 0.0 {
+            x_drag.truncate(i); // Stop adding points after hitting the ground
+            y_drag.truncate(i);
+            break;
+        }
+    }
+
+    let result = Array::new();
+    result.push(&Float64Array::from(x_drag_free.as_slice()));
+    result.push(&Float64Array::from(y_drag_free.as_slice()));
+    result.push(&Float64Array::from(x_drag.as_slice()));
+    result.push(&Float64Array::from(y_drag.as_slice()));
+
+    Ok(result)
+}
