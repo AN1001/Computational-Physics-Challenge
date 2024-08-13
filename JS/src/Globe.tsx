@@ -1,5 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+// @ts-ignore
 import * as THREE from "three";
+// @ts-ignore
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 interface Props {

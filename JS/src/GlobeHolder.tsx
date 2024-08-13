@@ -20,7 +20,7 @@ function GlobeHolder({ lat, long }: Props) {
     <>
       <Globe
         key={`10f`}
-        long={latLonToXYAngles(lat)}
+        long={latLonToXYAngles(long)}
         lat={latLonToXYAngles(lat)}
         angle={latLonToXYAngles(lat)}
       ></Globe>
