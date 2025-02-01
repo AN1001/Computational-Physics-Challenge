@@ -1,3 +1,11 @@
+[https://www.youtube.com/watch?v=zIzt4SNAplc] Video demo, (poorly edited by Arnav)
+
+Main Strengths:
+- Full Rust Webassembly Implementation
+- Full 3d projectile globe simulation
+- Progressive Web Application, ios, android, and PC application
+- Ramer-Douglas-Peucker algorithm prunes 95% of points improving render time.
+
 ### Extension Ideas 
 
 Maybe other planets or density of air, anything interesting. Game? Angry birds?
