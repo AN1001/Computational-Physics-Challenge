@@ -2,7 +2,8 @@
 
 Main Strengths:
 - Full Rust Webassembly Implementation
-- Full 3d projectile globe simulation
+- Angry Birds game
+- Incline slope simulation
 - Progressive Web Application, ios, android, and PC application
 - Ramer-Douglas-Peucker algorithm prunes 95% of points improving render time.
 
@@ -13,7 +14,6 @@ Maybe other planets or density of air, anything interesting. Game? Angry birds?
 300-600 people participating?
 
 Extension ideas:
-  - Angry Birds thing
   - Variable air density/pressure and account for gravity changing with height
   - Spherical Planet projection
   - GUI/App for projections
